@@ -27,7 +27,7 @@ expected_output = 19
 # end
 
 # begin
-input_to_array = sample_input.split(\n).map {&:split(' ')}
+input_to_array = sample_input.split('\n').map {|line| line.split(' ')}
 
 def make_hourglass_from_top_left(arr, y=0, x=0)
   [ arr[y][x], arr[y][x+1], arr[y][x+2],
