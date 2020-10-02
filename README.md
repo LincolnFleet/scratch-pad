@@ -1,1 +1,1 @@
-# Scratch-Pad---Code-Wars
+Challenges, snippets, scripts and experiments.
