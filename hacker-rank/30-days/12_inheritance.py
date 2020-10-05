@@ -3,26 +3,19 @@
 # A Student class constructor,
 # A char calculate() method that calculates a Student object's average and returns the grade character representative of their calculated average
 
-sampleInput = "Heraldo Memelli 8135627
-2
-100 80"
+sampleInput = "Heraldo Memelli 8135627 \n2 \n100 80"
 
-sampleOutput = "Name: Memelli, Heraldo
- ID: 8135627
- Grade: O"
+sampleOutput = "Name: Memelli, Heraldo \nID: 8135627 \nGrade: O"
 
 class Person:
   def __init__(self, firstName, lastName, idNumber):
     self.firstName = firstName
     self.lastName = lastName
     self.idNumber = idNumber
-  ;
 
   def printPerson(self):
     print("Name:", self.lastName + ",", self.firstName)
     print("ID:", self.idNumber)
-  ;
-;
 
 class Student(Person):
   def __init__(self, firstName, lastName, idNumber, scores):
@@ -30,7 +23,6 @@ class Student(Person):
     self.lastName = lastName
     self.idNumber = idNumber
     self.scores = scores
-  ;
 
   def calculate(self):
     gradeAvg = sum(self.scores) / len(self.scores)
@@ -46,8 +38,6 @@ class Student(Person):
         return "D"
     else:
         return "T"
-  ;
-;
 
 line = input().split()
 firstName = line[0]
@@ -58,3 +48,4 @@ scores = list( map(int, input().split()) )
 s = Student(firstName, lastName, idNum, scores)
 s.printPerson()
 print("Grade:", s.calculate())
+
