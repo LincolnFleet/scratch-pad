@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const open = require('open');
+// const open = require('open');
 const { stdin, stdout } = require('process');
 const dictionary = require('./assets/words_dictionary.json');
 
@@ -61,7 +61,7 @@ function failResponse(failCount, phase) {
     case 3:
       stdin.resume();
       stdout.write("You brought this on yourself.");
-      setTimeout(()=>{open(barneyABC)}, 2000);
+      // setTimeout(()=>{open(barneyABC)}, 2000);
     default:
       return;
   }
