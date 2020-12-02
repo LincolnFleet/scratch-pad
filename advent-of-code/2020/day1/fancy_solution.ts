@@ -9,6 +9,7 @@ const DATA: Array<number> = fs
 function main(inputList: Array<number>, targetSum: number): number {
   const sortedListAsc: Array<number> = inputList;
   sortedListAsc.sort((a, b) => (a > b ? 1 : -1));
+
   let highPointer: number = sortedListAsc.length - 1;
   let lowPointer: number = 0;
   let prevLoopDecreasedLowPointer: boolean = false;
@@ -25,14 +26,19 @@ function main(inputList: Array<number>, targetSum: number): number {
           highPointer -= 1;
           prevLoopDecreasedLowPointer = false;
         } else {
-          throw new Error("(sum > targetSum) && (highPointer > lowPointer + 1)");
+          throw new Error("(sum > targetSum) && !(lowPointer > 0) && !(highPointer > lowPointer + 1)");
         }
       } else if (sum < targetSum) {
-        if (highPointer > lowPointer + 1 && !prevLoopDecreasedLowPointer) {
-          lowPointer += 1;
-          prevLoopDecreasedLowPointer = false;
+        if (highPointer > lowPointer + 1) {
+          if (prevLoopDecreasedLowPointer) {
+            highPointer -= 1;
+            prevLoopDecreasedLowPointer = false;
+          } else {
+            lowPointer += 1;
+            prevLoopDecreasedLowPointer = false;
+          }
         } else {
-          throw new Error("(sum < targetSum) && (highPointer > lowPointer + 1)");
+          throw new Error("(sum < targetSum) && !(highPointer > lowPointer + 1)");
         }
       }
     }
@@ -53,6 +59,6 @@ function main(inputList: Array<number>, targetSum: number): number {
   }
 }
 
-console.time();
+console.time("run time");
 console.log(main(DATA, 2020));
-console.timeLog();
+console.timeLog("run time");
