@@ -32,7 +32,7 @@ function main(inputList: numList, targetSum: number): number {
         if (highPointer > lowPointer + 1) {
           lowPointer += 1;
         } else {
-          throw new Error("(sum < targetSum) && (highPointer > lowPointer +1");
+          throw new Error("(sum < targetSum) && (highPointer > lowPointer + 1)");
         }
       }
     }
