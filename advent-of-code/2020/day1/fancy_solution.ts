@@ -3,18 +3,16 @@ const fs = require("fs");
 const path = require("path");
 const inputFilePath = path.join(__dirname, "/input.txt");
 
-type numList = Array<number>;
-
-const DATA: numList = fs
-  .readfile(inputFilePath, (error: any, file: any) => {
+const DATA: Array<number> = fs
+  .readFile(inputFilePath, (error: any, file: any) => {
     if (error) throw error;
     return file.toString();
   })
   .then((bigStr: string) => bigStr.split("/n"))
   .then((arr: Array<string>) => arr.map((str: string) => parseInt(str)));
 
-function main(inputList: numList, targetSum: number): number {
-  const sortedListAsc: numList = inputList;
+function main(inputList: Array<number>, targetSum: number): number {
+  const sortedListAsc: Array<number> = inputList;
   sortedListAsc.sort((a, b) => (a > b ? 1 : -1));
   let highPointer: number = sortedListAsc.length - 1;
   let lowPointer: number = 0;
@@ -46,7 +44,7 @@ function main(inputList: numList, targetSum: number): number {
       }
     }
 
-    const pair: numList = [sortedListAsc[lowPointer], sortedListAsc[highPointer]];
+    const pair: Array<number> = [sortedListAsc[lowPointer], sortedListAsc[highPointer]];
 
     console.log(`${pair}; sum: ${pair[0] + pair[1]}; product: ${pair[0] * pair[1]}`);
 
