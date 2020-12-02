@@ -34,6 +34,8 @@ function main(inputList: numList, targetSum: number): number {
         } else {
           throw new Error("(sum < targetSum) && (highPointer > lowPointer + 1)");
         }
+      } else {
+        break;
       }
     }
 
