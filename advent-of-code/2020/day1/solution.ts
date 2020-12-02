@@ -1,10 +1,12 @@
 #!usr/bin/env node
 const fs = require("fs");
+const path = require("path");
+const inputFilePath = path.join(__dirname, "/input.txt");
 
 type numList = Array<number>;
 
 const DATA: numList = fs
-  .readfile("./input.txt", (error: any, file: any) => {
+  .readfile(inputFilePath, (error: any, file: any) => {
     if (error) throw error;
     return file.toString();
   })
@@ -12,7 +14,8 @@ const DATA: numList = fs
   .then((arr: Array<string>) => arr.map((str: string) => parseInt(str)));
 
 function main(inputList: numList, targetSum: number): number {
-  const sortedListAsc: numList = inputList.sort((a, b) => (a > b ? 1 : -1));
+  const sortedListAsc: numList = inputList;
+  sortedListAsc.sort((a, b) => (a > b ? 1 : -1));
   let highPointer: number = sortedListAsc.length - 1;
   let lowPointer: number = 0;
   let prevLoopDecreasedLowPointer: boolean = false;
