@@ -60,11 +60,4 @@ function main(inputList: numList, targetSum: number): number {
 
 main(DATA, 2020);
 
-const test = () => {
-  const dummyData = [400, 1, 2, 3, 4, -1, -2, -3];
-  console.log("test passing: ", main(dummyData, 404) == 1600);
-};
-
-test();
-
 export { main };
