@@ -67,5 +67,3 @@ function main(inputList: numList, targetSum: number): number {
 }
 
 main(DATA, 2020);
-
-export { main };
