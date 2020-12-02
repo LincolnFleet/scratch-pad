@@ -23,7 +23,7 @@ function main(inputList, targetSum) {
                     prevLoopDecreasedLowPointer = false;
                 }
                 else {
-                    throw new Error("(sum > targetSum) && (highPointer > lowPointer + 1)");
+                    throw new Error("(sum > targetSum) && !(lowPointer > 0) && !(highPointer > lowPointer + 1)");
                 }
             }
             else if (sum < targetSum) {
@@ -38,7 +38,7 @@ function main(inputList, targetSum) {
                     }
                 }
                 else {
-                    throw new Error("(sum < targetSum) && (highPointer > lowPointer + 1)");
+                    throw new Error("(sum < targetSum) && !(highPointer > lowPointer + 1)");
                 }
             }
         }
@@ -48,6 +48,6 @@ function main(inputList, targetSum) {
         console.log("Cannot find pair with sum of " + targetSum + ".\n      Reason for stop: " + error.message + "\n      State at time of stop: \n        list length: " + sortedListAsc.length + "\n        lowPointer: " + lowPointer + ", \n        highPointer: " + highPointer + ", \n        prevLoopDecreasedLowPointer: " + prevLoopDecreasedLowPointer + ",\n        nums: [" + sortedListAsc[lowPointer] + ", " + sortedListAsc[highPointer] + "], \n        sum: " + (sortedListAsc[lowPointer] + sortedListAsc[highPointer]));
     }
 }
-console.time("time elapsed");
+console.time("run time");
 console.log(main(DATA, 2020));
-console.timeLog("time elapsed");
+console.timeLog("run time");
