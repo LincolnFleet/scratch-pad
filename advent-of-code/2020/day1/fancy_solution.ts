@@ -1,15 +1,10 @@
 #!usr/bin/env node
 const fs = require("fs");
-const path = require("path");
-const inputFilePath = path.join(__dirname, "/input.txt");
 
 const DATA: Array<number> = fs
-  .readFile(inputFilePath, (error: any, file: any) => {
-    if (error) throw error;
-    return file.toString();
-  })
-  .then((bigStr: string) => bigStr.split("/n"))
-  .then((arr: Array<string>) => arr.map((str: string) => parseInt(str)));
+  .readFileSync("./input.txt", "utf-8")
+  .split("\n")
+  .map((str: string) => parseInt(str, 10));
 
 function main(inputList: Array<number>, targetSum: number): number {
   const sortedListAsc: Array<number> = inputList;
@@ -39,16 +34,10 @@ function main(inputList: Array<number>, targetSum: number): number {
         } else {
           throw new Error("(sum < targetSum) && (highPointer > lowPointer + 1)");
         }
-      } else {
-        break;
       }
     }
 
-    const pair: Array<number> = [sortedListAsc[lowPointer], sortedListAsc[highPointer]];
-
-    console.log(`${pair}; sum: ${pair[0] + pair[1]}; product: ${pair[0] * pair[1]}`);
-
-    return pair[0] * pair[1];
+    return sortedListAsc[lowPointer] * sortedListAsc[highPointer];
   } catch (error) {
     console.log(
       `Cannot find pair with sum of ${targetSum}.
@@ -64,4 +53,6 @@ function main(inputList: Array<number>, targetSum: number): number {
   }
 }
 
-main(DATA, 2020);
+console.time();
+console.log(main(DATA, 2020));
+console.timeLog();
