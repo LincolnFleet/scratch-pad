@@ -1,0 +1,17 @@
+Part 1:
+The automatic passport scanners are slow because they're having trouble detecting which passports have all required fields. The expected fields are as follows:
+
+byr (Birth Year)
+iyr (Issue Year)
+eyr (Expiration Year)
+hgt (Height)
+hcl (Hair Color)
+ecl (Eye Color)
+pid (Passport ID)
+cid (Country ID)
+
+Passport data is validated in batch files (your puzzle input). Each passport is represented as a sequence of key:value pairs separated by spaces or newlines. Passports are separated by blank lines.
+
+The third passport is interesting; the only missing field is cid, so it looks like data from North Pole Credentials, not a passport at all! Surely, nobody would mind if you made the system temporarily ignore missing cid fields. Treat this "passport" as valid.
+
+Count the number of valid passports - those that have all required fields. Treat cid as optional. In your batch file, how many passports are valid?
