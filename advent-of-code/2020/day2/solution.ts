@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const DATA: Array<string> = fs.readFileSync("./input.txt", "utf-8").split("\n");
 
-function WhereWe'reGoingWeDon'tNeedBrakes(list: Array<string>): number {
+function part1(list: Array<string>): number {
   return list.reduce((acc, entry) => {
     const [rule, password] = entry.split(":").map((str) => str.trim());
     const [quants, char] = rule.split(" ");
@@ -33,7 +33,7 @@ function part2(list: Array<string>): number {
 }
 
 console.time("part 1");
-console.log(WhereWe'reGoingWeDon'tNeedBrakes(DATA));
+console.log(part1(DATA));
 console.timeLog("part 1");
 
 console.time("part 2");
