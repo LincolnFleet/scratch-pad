@@ -18,8 +18,8 @@ function part1(data: string[], requiredFields: string[], optionalFields: string[
 // const fieldTitles: Set<string> = new Set(Object.keys(docObj));
 
 function part2(data: string[], requiredFields: {}, optionalFields: {}) {
+  const numberOfRequiredFields: number = new Set(Object.keys(requiredFields)).size;
   const validPassportCount = data.reduce((acc1, doc) => {
-    const numberOfRequiredFields: number = Object.keys(requiredFields);
     const lines: string[] = doc.split("/( |\n)/gm");
 
     if (numberOfRequiredFields == lines.length) {
