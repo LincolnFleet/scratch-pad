@@ -14,6 +14,9 @@ const DATA = fs.readFileSync("./input.txt", "utf-8").split("\n\n");
 //   }, 0);
 // }
 
+// const part1Required: Array<string> = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
+// const part1Optional: Array<string> = ["cid"];
+
 function scanDocs(
   data: string[],
   requiredFields: {},
@@ -54,9 +57,6 @@ function scanDocs(
 
   return validPassportCount;
 }
-
-// const part1Required: Array<string> = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
-// const part1Optional: Array<string> = ["cid"];
 
 const part2Required = {
   byr: (str: string): boolean => parseInt(str, 10) >= 1920 && parseInt(str, 10) <= 2002,

@@ -10,6 +10,8 @@ var DATA = fs.readFileSync("./input.txt", "utf-8").split("\n\n");
 //     return acc;
 //   }, 0);
 // }
+// const part1Required: Array<string> = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
+// const part1Optional: Array<string> = ["cid"];
 function scanDocs(data, requiredFields, optionalFields, ignoreFieldValues) {
     if (optionalFields === void 0) { optionalFields = {}; }
     if (ignoreFieldValues === void 0) { ignoreFieldValues = false; }
@@ -43,8 +45,6 @@ function scanDocs(data, requiredFields, optionalFields, ignoreFieldValues) {
     }, 0);
     return validPassportCount;
 }
-// const part1Required: Array<string> = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
-// const part1Optional: Array<string> = ["cid"];
 var part2Required = {
     byr: function (str) { return parseInt(str, 10) >= 1920 && parseInt(str, 10) <= 2002; },
     iyr: function (str) { return parseInt(str, 10) >= 2010 && parseInt(str, 10) <= 2020; },
