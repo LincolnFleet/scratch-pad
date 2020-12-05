@@ -11,22 +11,28 @@ function part1(data, requiredFields, optionalFields) {
     }, 0);
 }
 // const fieldTitleRGX: RegExp = RegExp(`${Object.keys(requiredFields).map((field) => `(${field}:)`).join("|")}`, "g");
-// const fieldTitles: Set<string> = new Set(Object.keys(docObj));
 function part2(data, requiredFields, optionalFields) {
-    return data.reduce(function (acc, doc) {
-        var docObj = doc.split("/( |\n)/gm").reduce(function (acc, line) {
-            var tup = line.split(":");
-            acc[tup[0]] = tup[1];
-            return acc;
-        }, {});
-        for (var _i = 0, docObj_1 = docObj; _i < docObj_1.length; _i++) {
-            var key = docObj_1[_i];
-            if (requiredFields[key](docObj[key])) {
-                return acc + 1;
+    var requiredFieldKeys = Object.keys(requiredFields);
+    var validPassportCount = data.reduce(function (acc1, doc) {
+        var lines = doc.split(/ |\n/g);
+        if (requiredFieldKeys.length == lines.length) {
+            var passingFieldsCount = lines.reduce(function (acc2, line) {
+                var _a = line.split(":"), key = _a[0], value = _a[1];
+                console.log(key, value);
+                if (requiredFieldKeys.includes(key) && requiredFields[key](value)) {
+                    return acc2 + 1;
+                }
+                else {
+                    return acc2;
+                }
+            }, 0);
+            if (passingFieldsCount == requiredFieldKeys.length) {
+                return acc1 + 1;
             }
         }
-        return acc;
+        return acc1;
     }, 0);
+    return validPassportCount;
 }
 var part1Required = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
 var part1Optional = ["cid"];
@@ -38,7 +44,7 @@ var part2Required = {
     iyr: function (str) { return parseInt(str, 10) >= 2010 && parseInt(str, 10) <= 2020; },
     eyr: function (str) { return parseInt(str, 10) >= 2020 && parseInt(str, 10) <= 2030; },
     hgt: function (str) {
-        var valid = str.match("/^(d{2,3})(cm|in)$/g");
+        var valid = str.match(/^(\d{2,3})|(cm|in)$/g);
         if (valid) {
             if (valid[1] == "in") {
                 return parseInt(valid[0], 10) >= 59 && parseInt(valid[0], 10) <= 76;
@@ -49,9 +55,9 @@ var part2Required = {
         }
         return false;
     },
-    hcl: function (str) { return str.test("/^#([a-f]|[0-9]){6}$/g"); },
+    hcl: function (str) { return RegExp(/^#([a-f]|[0-9]){6}$/g).test(str); },
     ecl: function (str) { return ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].includes(str); },
-    pid: function (str) { return str.test("/^d{9}$/g"); }
+    pid: function (str) { return RegExp(/^\d{9}$/g).test(str); }
 };
 var part2Optional = { cid: function (str) { return true; } };
 console.time("part 2");

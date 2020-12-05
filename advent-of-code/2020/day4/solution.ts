@@ -15,27 +15,29 @@ function part1(data: string[], requiredFields: string[], optionalFields: string[
 }
 
 // const fieldTitleRGX: RegExp = RegExp(`${Object.keys(requiredFields).map((field) => `(${field}:)`).join("|")}`, "g");
-// const fieldTitles: Set<string> = new Set(Object.keys(docObj));
 
 function part2(data: string[], requiredFields: {}, optionalFields: {}) {
-  const numberOfRequiredFields: number = new Set(Object.keys(requiredFields)).size;
-  const validPassportCount = data.reduce((acc1, doc) => {
-    const lines: string[] = doc.split("/( |\n)/gm");
+  const requiredFieldKeys: Array<string> = Object.keys(requiredFields);
 
-    if (numberOfRequiredFields == lines.length) {
-      
-      const passingFields: number = lines.reduce((acc2, line) => {
+  const validPassportCount = data.reduce((acc1, doc) => {
+
+    const lines: string[] = doc.split(/ |\n/g);
+    if (requiredFieldKeys.length == lines.length) {
+      const passingFieldsCount: number = lines.reduce((acc2, line) => {
+        
         const [key, value] = line.split(":");
-        if (requiredFields[key](value)) {
+        console.log(key, value)
+        if (requiredFieldKeys.includes(key) && requiredFields[key](value)) {
           return acc2 + 1;
+        } else {
+          return acc2;
         }
       }, 0);
 
-      if (passingFields == numberOfRequiredFields) {
+      if (passingFieldsCount == requiredFieldKeys.length) {
         return acc1 + 1;
       }
     }
-
     return acc1;
   }, 0);
 
@@ -50,11 +52,11 @@ console.log(part1(DATA, part1Required, part1Optional));
 console.timeLog("part 1");
 
 const part2Required = {
-  byr: (str) => parseInt(str, 10) >= 1920 && parseInt(str, 10) <= 2002,
-  iyr: (str) => parseInt(str, 10) >= 2010 && parseInt(str, 10) <= 2020,
-  eyr: (str) => parseInt(str, 10) >= 2020 && parseInt(str, 10) <= 2030,
-  hgt: (str) => {
-    const valid = str.match("/^(d{2,3})(cm|in)$/g");
+  byr: (str: string): boolean => parseInt(str, 10) >= 1920 && parseInt(str, 10) <= 2002,
+  iyr: (str: string): boolean => parseInt(str, 10) >= 2010 && parseInt(str, 10) <= 2020,
+  eyr: (str: string): boolean => parseInt(str, 10) >= 2020 && parseInt(str, 10) <= 2030,
+  hgt: (str: string): boolean => {
+    const valid = str.match(/^(\d{2,3})|(cm|in)$/g);
     if (valid) {
       if (valid[1] == "in") {
         return parseInt(valid[0], 10) >= 59 && parseInt(valid[0], 10) <= 76;
@@ -64,9 +66,9 @@ const part2Required = {
     }
     return false;
   },
-  hcl: (str) => str.test("/^#([a-f]|[0-9]){6}$/g"),
-  ecl: (str) => ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].includes(str),
-  pid: (str) => str.test("/^d{9}$/g"),
+  hcl: (str: string): boolean => RegExp(/^#([a-f]|[0-9]){6}$/g).test(str),
+  ecl: (str: string): boolean => ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].includes(str),
+  pid: (str: string): boolean => RegExp(/^\d{9}$/g).test(str),
 };
 const part2Optional = { cid: (str) => true };
 
