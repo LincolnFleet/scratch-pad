@@ -13,12 +13,15 @@ function part1(data, requiredFields, optionalFields) {
 // const fieldTitleRGX: RegExp = RegExp(`${Object.keys(requiredFields).map((field) => `(${field}:)`).join("|")}`, "g");
 function part2(data, requiredFields, optionalFields) {
     var requiredFieldKeys = Object.keys(requiredFields);
-    var validPassportCount = data.reduce(function (acc1, doc) {
+    var optionalFieldKeys = Object.keys(optionalFields);
+    var validPassportCount = data.reduce(function (acc1, doc, i) {
+        console.log("doc:", i);
+        console.log(doc);
         var lines = doc.split(/ |\n/g);
-        if (requiredFieldKeys.length == lines.length) {
+        if (requiredFieldKeys.length == lines.length || requiredFieldKeys.length + optionalFieldKeys.length == lines.length) {
             var passingFieldsCount = lines.reduce(function (acc2, line) {
                 var _a = line.split(":"), key = _a[0], value = _a[1];
-                console.log(key, value);
+                // console.log(key, value);
                 if (requiredFieldKeys.includes(key) && requiredFields[key](value)) {
                     return acc2 + 1;
                 }
@@ -27,9 +30,11 @@ function part2(data, requiredFields, optionalFields) {
                 }
             }, 0);
             if (passingFieldsCount == requiredFieldKeys.length) {
+                console.log("pass");
                 return acc1 + 1;
             }
         }
+        console.log("fail");
         return acc1;
     }, 0);
     return validPassportCount;
@@ -55,7 +60,7 @@ var part2Required = {
         }
         return false;
     },
-    hcl: function (str) { return RegExp(/^#([a-f]|[0-9]){6}$/g).test(str); },
+    hcl: function (str) { return RegExp(/^#([a-f0-9]){6}$/g).test(str); },
     ecl: function (str) { return ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].includes(str); },
     pid: function (str) { return RegExp(/^\d{9}$/g).test(str); }
 };

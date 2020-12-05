@@ -18,26 +18,30 @@ function part1(data: string[], requiredFields: string[], optionalFields: string[
 
 function part2(data: string[], requiredFields: {}, optionalFields: {}) {
   const requiredFieldKeys: Array<string> = Object.keys(requiredFields);
+  const optionalFieldKeys: Array<string> = Object.keys(optionalFields);
 
-  const validPassportCount = data.reduce((acc1, doc) => {
-
+  const validPassportCount = data.reduce((acc1, doc, i) => {
+    console.log("doc:", i);
+    console.log(doc);
     const lines: string[] = doc.split(/ |\n/g);
-    if (requiredFieldKeys.length == lines.length) {
-      const passingFieldsCount: number = lines.reduce((acc2, line) => {
-        
-        const [key, value] = line.split(":");
-        console.log(key, value)
-        if (requiredFieldKeys.includes(key) && requiredFields[key](value)) {
-          return acc2 + 1;
-        } else {
-          return acc2;
-        }
+    if (requiredFieldKeys.length == lines.length || requiredFieldKeys.length + optionalFieldKeys.length == lines.length) {
+      const passingFieldsCount: number = lines.reduce(
+        (acc2, line) => {
+            const [key, value] = line.split(":");
+            // console.log(key, value);
+            if (requiredFieldKeys.includes(key) && requiredFields[key](value)) {
+              return acc2 + 1;
+            } else {
+              return acc2;
+            }
       }, 0);
 
       if (passingFieldsCount == requiredFieldKeys.length) {
+        console.log("pass");
         return acc1 + 1;
       }
     }
+    console.log("fail");
     return acc1;
   }, 0);
 
@@ -66,7 +70,7 @@ const part2Required = {
     }
     return false;
   },
-  hcl: (str: string): boolean => RegExp(/^#([a-f]|[0-9]){6}$/g).test(str),
+  hcl: (str: string): boolean => RegExp(/^#([a-f0-9]){6}$/g).test(str),
   ecl: (str: string): boolean => ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].includes(str),
   pid: (str: string): boolean => RegExp(/^\d{9}$/g).test(str),
 };
