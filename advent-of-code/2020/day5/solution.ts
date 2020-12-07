@@ -1,7 +1,4 @@
 #!usr/bin/env node
-
-import { isConstructorDeclaration, NumericLiteral } from "typescript";
-
 const fs = require("fs");
 
 class AirPlane {
