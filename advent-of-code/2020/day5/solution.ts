@@ -1,38 +1,8 @@
 #!usr/bin/env node
 
+import { isConstructorDeclaration, NumericLiteral } from "typescript";
+
 const fs = require("fs");
-
-const DATA = fs.readFileSync("./input.txt", "utf-8").split(/^\n$/gm);
-
-function binarySearch(
-  sectionMax: number,
-  sectionMin: number,
-  ticketString: string,
-  topHalfMatch: string,
-  bottomHalfMatch: string
-): number {
-  const testChar: string = ticketString.charAt(0);
-  const sectionMiddle: number = Math.floor(sectionMax / 2);
-  if (testChar.toUpperCase() === topHalfMatch.toUpperCase()) {
-    binarySearch(
-      sectionMax,
-      sectionMiddle,
-      ticketString.slice(1),
-      topHalfMatch,
-      bottomHalfMatch
-    );
-  } else if (testChar.toUpperCase() === bottomHalfMatch.toUpperCase()) {
-    binarySearch(
-      sectionMiddle,
-      sectionMin,
-      ticketString.slice(1),
-      topHalfMatch,
-      bottomHalfMatch
-    );
-  } else {
-    return sectionMax;
-  }
-}
 
 class AirPlane {
   totalRows: number;
@@ -52,6 +22,8 @@ class BoardingPass extends AirPlane {
   rowSelectorLow: string;
   seatSelectorHigh: string;
   seatSelectorLow: string;
+  rowNumber: number;
+  seatNumber: number;
   seatId: number;
 
   constructor(ticketString: string, plane = new AirPlane()) {
@@ -60,27 +32,75 @@ class BoardingPass extends AirPlane {
     this.rowString = ticketString.slice(0, ticketString.length - 3);
     this.rowSelectorHigh = "B";
     this.rowSelectorLow = "F";
-    this.seatString = ticketString.slice(ticketString.length - 3, ticketString.length - 1);
+    this.seatString = ticketString.slice(ticketString.length - 3);
     this.seatSelectorHigh = "R";
     this.seatSelectorLow = "L";
-    this.seatId = this.findSeatId();
-  }
-
-  findSeatId(): number {
-    const row: number = binarySearch(
-      this.totalRows,
-      1,
+    this.rowNumber = this.decodeTicketString(
       this.rowString,
       this.rowSelectorHigh,
-      this.rowSelectorLow
+      this.rowSelectorLow,
+      this.totalRows
     );
-    const column: number = binarySearch(
-      this.seatsPerRow,
-      1,
-      this.seatString,
-      this.seatSelectorHigh,
-      this.seatSelectorLow
+    this.seatNumber = this.decodeTicketString(
+      this.seatString, 
+      this.seatSelectorHigh, 
+      this.seatSelectorLow,
+      this.seatsPerRow
     );
-    return row * this.seatsPerRow + column;
+    this.seatId = this.rowNumber * this.seatsPerRow + this.seatNumber;
+  }
+
+  decodeTicketString(
+    ticketString: string,
+    selectHigh: string,
+    selectLow: string,
+    sectionMax: number,
+    sectionMin: number = 0,
+  ): number {
+    let sectionMiddle: number = Math.floor((sectionMax + sectionMin) / 2);
+
+    for (let i=0; i < ticketString.length; i++) {
+      const char = ticketString.charAt(i);
+      if (char === selectHigh) {
+        sectionMin = sectionMiddle;
+      } else if (char === selectLow) {
+        sectionMax = sectionMiddle;
+      }
+      sectionMiddle = Math.floor((sectionMax + sectionMin) / 2);
+    }
+
+    return sectionMiddle;
   }
 }
+
+const DATA: BoardingPass[] = fs.readFileSync("./input.txt", "utf-8").split(/\n/gm).map((ticket) => new BoardingPass(ticket));
+
+function allSeatIdsAsc(DATA: BoardingPass[]): number[] {
+  let list: number[] = [];
+  DATA.forEach((ticket) => list.push(ticket.seatId));
+  list.sort((a, b) => a - b);
+  return list;
+}
+
+function part1(DATA: BoardingPass[]): number {
+  const list = allSeatIdsAsc(DATA);
+  return list[list.length - 1];
+}
+
+function part2(data: BoardingPass[]): number {
+  const list = allSeatIdsAsc(DATA);
+  
+  for (let i = 0; i < list.length; i++) {
+    if ((list[i] - list[i-1]) > 1) {
+      return list[i] - 1;
+    }
+  }
+}
+
+console.time("part 1");
+console.log(part1(DATA));
+console.timeLog("part 1");
+
+console.time("part 2");
+console.log(part2(DATA));
+console.timeLog("part 2");
