@@ -33,10 +33,9 @@ function part2(data) {
                 yesAnswers[letter] ? (yesAnswers[letter] += 1) : (yesAnswers[letter] = 1);
             }
         }
-        console.log(group.length, group);
         for (var question in yesAnswers) {
             if (yesAnswers[question] == group.length) {
-                yesToAllCounts += yesAnswers[question];
+                yesToAllCounts += 1;
             }
         }
     }
